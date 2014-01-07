@@ -23,16 +23,13 @@ public class RssFeedImpl implements RssFeed {
     public List<SyndEntry> get(URL feedURL) {
         List<SyndEntry> feedEntries = new ArrayList<>() ;
         try {
-            XmlReader reader = new XmlReader(feedURL);
-            try {
+            try (XmlReader reader = new XmlReader(feedURL)) {
                 SyndFeed feed = new SyndFeedInput().build(reader);
-                for (Iterator<SyndEntry> i = feed.getEntries().iterator(); i.hasNext();) {
-                    feedEntries.add(i.next());
+                for (SyndEntry syndEntry : (Iterable<SyndEntry>) feed.getEntries()) {
+                    feedEntries.add(syndEntry);
                 }
             } catch (FeedException e) {
                 logger.error("feed reading failed", e);
-            } finally {
-                reader.close();
             }
         } catch (MalformedURLException e) {
             logger.error("invalid url", e);

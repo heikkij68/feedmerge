@@ -1,0 +1,12 @@
+# IDEA project files
+*.iml
+*.iws
+*.ipr
+.idea
+
+# Maven build directory
+target/
+
+# OS Specific files
+.DS_Store
+*~

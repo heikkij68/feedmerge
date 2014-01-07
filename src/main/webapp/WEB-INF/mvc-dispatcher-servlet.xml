@@ -12,6 +12,10 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
+    <bean class="com.springapp.mvc.RssUrlImpl" id="rssUrl"/>
+
+    <bean class="com.springapp.mvc.RssUrlProvider" id="rssUrlProvider"/>
+
     <bean class="com.springapp.mvc.RssFeedImpl" id="rssFeed"/>
 
     <bean class="com.springapp.mvc.RssFeedService" id="rssFeedService"/>

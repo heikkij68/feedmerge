@@ -1,1 +1,10 @@
-This file was created by IntelliJ IDEA 12.1.5 for binding GitHub repository
+Testailua Spring MVC frameworkilla. Ohjelma lukee muutamaa Kauppalehden RSS-feediä:
+
+http://rss.kauppalehti.fi/rss/etusivun_uutiset.jsp
+http://rss.kauppalehti.fi/rss/yritysuutiset.jsp
+http://rss.kauppalehti.fi/rss/omaraha.jsp
+http://rss.kauppalehti.fi/rss/auto.jsp
+
+Näistä feedeistä koostetaan yksinkertainen html-sivu.
+
+Ohjelman voi testata maven komennolla mvn jetty:run, jonka jälkeen RSS koosteen näkee http://localhost:8080/

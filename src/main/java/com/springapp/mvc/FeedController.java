@@ -14,12 +14,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Controller
 @RequestMapping("/")
 public class FeedController {
 
-    final static transient Logger logger = LoggerFactory.getLogger(FeedController.class);
+    private final static transient Logger logger = LoggerFactory.getLogger(FeedController.class);
+
+    private final static long cachePeriodInMilliseconds = 1000 * 30; // 30 seconds
+
+    private long cached = 0;
+
+    private final AtomicReference<List<SyndEntry>> cache = new AtomicReference<>();
 
     @Autowired(required = true)
     RssUrlProvider rssUrlProvider;
@@ -37,6 +44,12 @@ public class FeedController {
     @RequestMapping(method = RequestMethod.GET)
     public String showFeedPage(ModelMap model) {
 
+        if (cacheIsValid(cached)) {
+            model.addAttribute("entries", cache.get());
+            logger.info("return cached entries");
+            return "index";
+        }
+
         List<SyndEntry> feedEntries = new ArrayList<>();
         List<URL> urls = rssUrlProvider.get();
         for (URL url : urls) {
@@ -49,8 +62,14 @@ public class FeedController {
             }
         });
         model.addAttribute("entries", feedEntries);
-        logger.info("return " + feedEntries.size() + " entries");
+        cache.set(feedEntries);
+        cached = System.currentTimeMillis();
+        logger.info("return new entries");
         return "index";
+    }
+
+    private static boolean cacheIsValid(long cached) {
+        return cached > 0 && System.currentTimeMillis() < cached + cachePeriodInMilliseconds;
     }
 
 }

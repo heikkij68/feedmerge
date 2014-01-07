@@ -20,11 +20,9 @@
                 <tr id="description">
                     <td class="news size11">${entry.description.value}</td>
                 </tr>
-                <tr />
             </c:forEach>
         </table>
     </c:if>
     </div>
 </body>
-</div>
 </html>
